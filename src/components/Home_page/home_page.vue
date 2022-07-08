@@ -1,44 +1,40 @@
 <template>
   <div>
     <el-container>
-      <el-header>
-        <el-row>
-          <el-col :span="10" style="margin-top: 12px">
-            <el-image
-              :fit="fit"
-              :src="require(`@/assets/img/IMG_7161.jpeg`)"
-              style="width: 120px; height: 50px"
-            ></el-image>
-          </el-col>
-          <el-col :span="8" style="margin-top: 12px">
-            <el-input style="border-color: rgb(239, 79, 25)">
-              <el-button slot="append" icon="el-icon-search" style="background-color: rgb(239, 79, 25) border-color: rgb(239, 79, 25)"></el-button>
-            </el-input>
-            <!-- <el-card v-if="isSearch">...</el-card> -->
-          </el-col>
-          <el-col :span="4" style="margin-top: 12px">
-            <el-button
-              @click="login"
-              id="main_header_btn"
-              round
-              style="z-index: 99"
-              type="primary"
-              v-show="visible"
-            >登录
-            </el-button>
-            <el-button
-              @click="back"
-              id="main_header_btn_back"
-              round
-              style="z-index: 99"
-              type="primary"
-              v-show="!visible"
-            >返回
-            </el-button>
-            <!-- <el-button round class="registBt">注册</el-button> -->
-          </el-col>
-        </el-row>
-      </el-header>
+<!--      <el-header>-->
+<!--        <el-row>-->
+<!--          <el-col :span="10" style="margin-top: 12px">-->
+<!--            <el-image-->
+<!--              :fit="fit"-->
+<!--              :src="require(`@/assets/img/IMG_7161.jpeg`)"-->
+<!--              style="width: 120px; height: 50px"-->
+<!--            ></el-image>-->
+<!--          </el-col>-->
+<!--          <el-col :span="8" style="margin-top: 12px">-->
+<!--          </el-col>-->
+<!--          <el-col :span="4" style="margin-top: 12px">-->
+<!--            <el-button-->
+<!--              @click="login"-->
+<!--              id="main_header_btn"-->
+<!--              round-->
+<!--              style="z-index: 99"-->
+<!--              type="primary"-->
+<!--              v-show="visible"-->
+<!--            >登录-->
+<!--            </el-button>-->
+<!--            <el-button-->
+<!--              @click="back"-->
+<!--              id="main_header_btn_back"-->
+<!--              round-->
+<!--              style="z-index: 99"-->
+<!--              type="primary"-->
+<!--              v-show="!visible"-->
+<!--            >返回-->
+<!--            </el-button>-->
+<!--            &lt;!&ndash; <el-button round class="registBt">注册</el-button> &ndash;&gt;-->
+<!--          </el-col>-->
+<!--        </el-row>-->
+<!--      </el-header>-->
       <el-main class="el-main">
         <div class="main_div">
           <div id="main_header">
@@ -61,25 +57,27 @@
                 <span class="typing"></span>
               </vue-typed-js>
             </div>
-            <el-button
-              @click="login"
-              id="main_header_btn"
-              round
-              style="z-index: 99"
-              type="primary"
-              v-show="visible"
-            >登录
-            </el-button>
+            <div class="btn">
+              <el-button
+                @click="login"
+                id="main_header_btn"
+                round
+                style="z-index: 99"
+                type="primary"
+                v-show="visible"
+              >登录
+              </el-button>
+              <el-button
+                @click="back"
+                id="main_header_btn_back"
+                round
+                style="z-index: 99"
+                type="primary"
+                v-show="!visible"
+              >返回
+              </el-button>
+            </div>
 
-            <el-button
-              @click="back"
-              id="main_header_btn_back"
-              round
-              style="z-index: 99"
-              type="primary"
-              v-show="!visible"
-            >返回
-            </el-button>
 
             <img
               class="backimg"
@@ -644,5 +642,11 @@ export default {
   font-size: 24px;
   line-height: 200%;
   color: #5e5e5e;
+}
+
+.btn{
+  position: fixed;
+  right: 5%;
+  top: 1%;
 }
 </style>

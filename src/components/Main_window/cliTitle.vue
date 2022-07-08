@@ -82,7 +82,7 @@ export default {
     },
     // 全屏事件
     handleFullScreen() {
-      //嵌套：定义本地变量 =
+      //嵌套：定义本地变量 = 
       let element = document.documentElement;
       if (this.fullscreen) {
         if (document.exitFullscreen) {

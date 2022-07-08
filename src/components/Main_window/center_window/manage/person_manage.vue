@@ -2,7 +2,7 @@
   <div>
     <el-row>
       <el-col :span="22">
-        <el-input style="border-color: rgb(239, 79, 25)">
+        <el-input style="border-color: rgb(239, 79, 25)" v-model="search" placeholder="请输入内容">
           <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
       </el-col>
@@ -55,24 +55,7 @@
       border
       :header-cell-style="{'text-align':'center'}"
       :cell-style="{'text-align':'center'}"
-      style="width: 100%">
-      <el-table-column
-        label="ID"
-        width="60">
-        <template slot-scope="scope">
-          <!--          <i class="el-icon-time"></i>-->
-          <span style="margin-left: 10px">{{ scope.row.id }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="头像"
-        width="80">
-        <template slot-scope="scope">
-          <!--          <i class="el-icon-time"></i>-->
-<!--          <img :src=scope.row.src style="height: 50px;width: 50px">-->
-          <el-avatar :size="small" :src="scope.row.url"></el-avatar>
-        </template>
-      </el-table-column>
+      style="width: 100%; margin-top: 1%">
       <el-table-column
         label="姓名"
         width="90">
@@ -103,16 +86,15 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="生日"
-        width="150">
+        label="学历"
+        width="90">
         <template slot-scope="scope">
-          <i class="el-icon-time"></i>
-          <span style="margin-left: 10px">{{ scope.row.birth }}</span>
+          <span style="margin-left: 10px">{{ scope.row.edu }}</span>
         </template>
       </el-table-column>
       <el-table-column
         label="备注"
-        width="350">
+        width="550">
         <template slot-scope="scope">
           <!--          <i class="el-icon-time"></i>-->
           <span style="margin-left: 10px">{{ scope.row.addition }}</span>
@@ -141,6 +123,7 @@
 export default {
   data() {
     return {
+      search: '',
       tableData: [{
         id: '1',
         url:"https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
@@ -192,9 +175,13 @@ export default {
       },
     }
   },
+  created(){
+    this.init();
+  },
   methods: {
     handleEdit(index, row) {
       console.log(index, row);
+      this.$router.push({ path: `/mainwindow/detail/person_detail` });
     },
     handleCancel(){
       visible = false;
@@ -207,6 +194,70 @@ export default {
       console.log(this.form);
       this.dialogFormVisible = false;
       this.dialogFormVisible1 = true;
+    },
+    //初始化页面
+    init() {
+      this.$api.staff_info({}, { type: "json" }).then((response) => {
+        console.log(response)
+        if (response.state === 1) {
+          //查询成功
+          this.tableData = [];
+          for (let i = 0; i < response.elderly_info.length; i ++) {
+            let val = response.staff_info[i];
+            // console.log();
+            let param = {
+              url: "", //头像：还没有
+              name: val.name,
+              address: "记得让后端传",
+              sex: val.gender == 1 ? '男': '女',
+              tel: val.tel,
+              edu: "带专",
+              id_card: val.id_card,
+              age: this.doHandleYear() - parseInt(val.birthday.slice(0, 4)),
+              in_date: val.in_time,
+              out_date: val.out_time,
+              face_feature: "unknown",
+              room:val.room_number,
+              guardian_name: val.guardian_name,
+              guardian_tel: val.guardian_tel,
+              guardian_relation: val.guardian_relation,
+              addition: val.remarks
+            };
+            this.tableData.push(param);
+          }
+        }
+      });
+    },
+
+    //获取年月
+    doHandleDate() {
+      var myDate = new Date();
+      var tYear = myDate.getFullYear();
+      var tMonth = myDate.getMonth();
+
+      var m = tMonth + 1;
+      if (m.toString().length == 1) {
+        m = "0" + m;
+      }
+      return tYear + "-" + m;
+    },
+
+    //获取年份
+    doHandleYear(tYear) {
+      var myDate = new Date();
+      var tYear = myDate.getFullYear();
+
+      return tYear;
+    },
+    doHandleMonth() {
+      var myDate = new Date();
+      var tMonth = myDate.getMonth();
+
+      var m = tMonth + 1;
+      if (m.toString().length == 1) {
+        m = "0" + m;
+      }
+      return m;
     },
   }
 }

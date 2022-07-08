@@ -12,7 +12,7 @@
       id="register_button"
       @click="register"
       :disabled="register_not_complete"
-    >注 册</el-button
+      >注 册</el-button
     >
     <div :class="{ on: !is_admin }">
       <el-input

@@ -14,29 +14,14 @@
       <el-form-item label="电话">
         <el-input v-model="form.tel" :disabled="isUse"></el-input>
       </el-form-item>
-      <el-form-item label="身份证">
-        <el-input v-model="form.id_Card" :disabled="isUse"></el-input>
+      <el-form-item label="学历">
+        <el-input v-model="form.edu" :disabled="isUse"></el-input>
       </el-form-item>
-      <el-form-item label="房间号">
-        <el-input v-model="form.room" :disabled="isUse"></el-input>
-      </el-form-item>
-      <el-form-item label="生日">
-        <el-input v-model="form.birth" :disabled="isUse"></el-input>
-      </el-form-item>
-      <el-form-item label="入院时间">
+      <el-form-item label="入职时间">
         <el-input v-model="form.in_time" :disabled="isUse"></el-input>
       </el-form-item>
-      <el-form-item label="出院时间">
+      <el-form-item label="离职时间">
         <el-input v-model="form.out_time" :disabled="isUse"></el-input>
-      </el-form-item>
-      <el-form-item label="监护人">
-        <el-input v-model="form.guard_name" :disabled="isUse"></el-input>
-      </el-form-item>
-      <el-form-item label="监护电话">
-        <el-input v-model="form.guard_tel" :disabled="isUse"></el-input>
-      </el-form-item>
-      <el-form-item label="关系">
-        <el-input v-model="form.relation" :disabled="isUse"></el-input>
       </el-form-item>
       <el-form-item label="备注">
         <el-input v-model="form.out_time" :disabled="isUse"></el-input>
@@ -103,7 +88,7 @@ export default {
       if(this.msg2=="返回"){
         console.log("1111");
         this.msg2 = "取消";
-        this.$router.push({ path: `/mainwindow/manage/elder_manage` });
+        this.$router.push({ path: `/mainwindow/manage/vol_manage` });
         console.log("1111");
       }
       else if(this.msg2 == "取消"){
