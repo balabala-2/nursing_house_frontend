@@ -35,6 +35,17 @@ export default [
     url: '/add_elderly_info',
     method: 'post'
   },
+  
+  {
+    name: 'del_elderly_info',//初始化管理界面
+    url: '/del_elderly_info',
+    method: 'post'
+  },  
+  {
+    name: 'update_elderly_info',//初始化管理界面
+    url: '/update_elderly_info',
+    method: 'post'
+  }, 
   {
     name: 'volunteer_info',//初始化管理界面
     url: '/volunteer_info',
@@ -46,6 +57,19 @@ export default [
     method: 'post'
   },  
   {
+    name: 'del_volunteer_info',//初始化管理界面
+    url: '/del_volunteer_info',
+    method: 'post'
+  },
+  {
+    name: 'update_volunteer_info',//初始化管理界面
+    url: '/update_volunteer_info',
+    method: 'post'
+  },
+
+
+  
+  {
     name: 'staff_info',//初始化管理界面
     url: '/staff_info',
     method: 'post'
@@ -54,7 +78,17 @@ export default [
     name: 'add_staff_info',//初始化管理界面
     url: '/add_staff_info',
     method: 'post'
-  },     
+  },
+  {
+    name: 'del_staff_info',//初始化管理界面
+    url: '/del_staff_info',
+    method: 'post'
+  },   
+  {
+    name: 'update_staff_info',//初始化管理界面
+    url: '/update_staff_info',
+    method: 'post'
+  },      
   {
     type:'url',
     name: 'avatar',//初始化管理界面

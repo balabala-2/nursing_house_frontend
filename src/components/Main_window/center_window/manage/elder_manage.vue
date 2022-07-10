@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-row>
+      <!-- 搜索框 -->
       <el-col :span="22">
         <el-input
           style="border-color: rgb(239, 79, 25)"
@@ -10,11 +11,14 @@
           <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
       </el-col>
+      
       <el-col :span="2">
+        <!-- 添加按钮 -->
         <el-button
           icon="el-icon-plus"
           @click="dialogFormVisible = true"
         ></el-button>
+        <!-- 添加老人信息对话框1 -->
         <el-dialog
           title="添加老人"
           :visible.sync="dialogFormVisible"
@@ -29,7 +33,7 @@
               ></el-input>
             </el-form-item>
             <el-form-item label="性别：" :label-width="formLabelWidth">
-              <el-select v-model="form.sex" placeholder="请选择性别">
+              <el-select v-model="form.gender" placeholder="请选择性别">
                 <el-option label="男" value="male"></el-option>
                 <el-option label="女" value="female"></el-option>
               </el-select>
@@ -43,7 +47,7 @@
             </el-form-item>
             <el-form-item label="身份证：" :label-width="formLabelWidth">
               <el-input
-                v-model="form.id_Card"
+                v-model="form.id_card"
                 autocomplete="off"
                 style="width: 220px"
               ></el-input>
@@ -58,7 +62,7 @@
             </el-form-item>
             <el-form-item label="入院日期：" :label-width="formLabelWidth">
               <el-date-picker
-                v-model="form.in_date"
+                v-model="form.in_time"
                 type="date"
                 placeholder="选择日期"
               >
@@ -66,36 +70,20 @@
             </el-form-item>
             <el-form-item label="出院日期：" :label-width="formLabelWidth">
               <el-date-picker
-                v-model="form.out_date"
+                v-model="form.out_time"
                 type="date"
                 placeholder="选择日期"
               >
               </el-date-picker>
             </el-form-item>
-            <!--            <el-form-item label="房间号：" :label-width="formLabelWidth">-->
-            <!--              <el-input v-model="form.room" autocomplete="off"></el-input>-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item label="监护人姓名：" :label-width="formLabelWidth">-->
-            <!--              <el-input v-model="form.guardian_name" autocomplete="off"></el-input>-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item label="监护人电话：" :label-width="formLabelWidth">-->
-            <!--              <el-input v-model="form.guardian_tel" autocomplete="off"></el-input>-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item label="与被监护人的关系：" :label-width="formLabelWidth">-->
-            <!--              <el-input v-model="form.guardian_relation" autocomplete="off"></el-input>-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item label="备注：" :label-width="formLabelWidth">-->
-            <!--              <el-input v-model="form.remarks" autocomplete="off"></el-input>-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item label="管理员ID：" :label-width="formLabelWidth">-->
-            <!--              <el-input v-model="form.manager_id" autocomplete="off"></el-input>-->
-            <!--            </el-form-item>-->
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="nextStep">下一步</el-button>
+            <el-button type="primary" @click="nextStep_to_2">下一步</el-button>
           </div>
         </el-dialog>
+
+        <!-- 添加老人信息对话框2 -->
         <el-dialog
           title="添加老人"
           :visible.sync="dialogFormVisible1"
@@ -104,7 +92,7 @@
           <el-form :model="form">
             <el-form-item label="房间号：" :label-width="formLabelWidth">
               <el-input
-                v-model="form.room"
+                v-model="form.room_number"
                 autocomplete="off"
                 style="width: 80%"
               ></el-input>
@@ -139,12 +127,29 @@
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button @click="preStep">上一步</el-button>
-            <el-button type="primary" @click="nextStep1">下一步</el-button>
+            <el-button @click="preStep_to_1">上一步</el-button>
+            <el-button type="primary" @click="nextStep_to_3">下一步</el-button>
+          </div>
+        </el-dialog>
+
+        <!-- 添加老人信息对话框3 -->
+        <el-dialog
+          title="添加老人-人脸信息"
+          :visible.sync="dialogFormVisible2"
+          width="30%"
+        >
+          <div>
+            插入图片？
+            <!-- <img></img> -->
+          </div>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="preStep_to_2">上一步</el-button>
+            <el-button type="primary" @click="submit_form">提交</el-button>
           </div>
         </el-dialog>
       </el-col>
     </el-row>
+    <!-- 老人简要信息表格 -->
     <el-table
       :data="tableData"
       height="550"
@@ -178,7 +183,7 @@
       <el-table-column label="性别" width="60">
         <template slot-scope="scope">
           <!--          <i class="el-icon-time"></i>-->
-          <span style="margin-left: 10px">{{ scope.row.sex }}</span>
+          <span style="margin-left: 10px">{{ scope.row.gender }}</span>
         </template>
       </el-table-column>
       <el-table-column label="年龄" width="60">
@@ -190,18 +195,18 @@
       <el-table-column label="入院日期" width="150">
         <template slot-scope="scope">
           <i class="el-icon-time"></i>
-          <span style="margin-left: 10px">{{ scope.row.in_date }}</span>
+          <span style="margin-left: 10px">{{ scope.row.in_time }}</span>
         </template>
       </el-table-column>
       <el-table-column label="房间号" width="90">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.room }}</span>
+          <span style="margin-left: 10px">{{ scope.row.room_number }}</span>
         </template>
       </el-table-column>
       <el-table-column label="备注" width="400">
         <template slot-scope="scope">
           <!--          <i class="el-icon-time"></i>-->
-          <span style="margin-left: 10px">{{ scope.row.addition }}</span>
+          <span style="margin-left: 10px">{{ scope.row.remarks }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="150">
@@ -233,22 +238,25 @@ export default {
     return {
       search: "",
       tableData: [],
-      dialogFormVisible1: false,
       dialogFormVisible: false,
+      dialogFormVisible1: false,
+      dialogFormVisible2: false,
       form: {
+        id:0,
         name: "",
-        sex: "",
+        gender: "",
         tel: "",
-        in_date: "",
-        out_date: "",
+        id_card: "",
         birthday: "",
-        id_Card: "",
+        in_time: "",
+        out_time: "",
         face_feature: "",
-        room: "",
+        room_number: "",
         guardian_name: "",
         guardian_tel: "",
         guardian_relation: "",
         remarks: "",
+        create_manager_id: 0
       },
       formLabelWidth: "120px",
       disabledDate(time) {
@@ -261,111 +269,113 @@ export default {
     this.init();
   },
   methods: {
+    //成功弹出框
+    success_box(msg) {
+      this.$message({
+        showClose: true,
+        message: msg,
+        type: 'success'
+      });
+    },
+    //失败弹出框
+    fail_box(msg) {
+      this.$message({
+        showClose: true,
+        message: msg,
+        type: 'error'
+      });
+    },
     handleEdit(index, row) {
       console.log(index, row);
-      this.$router.push({ path: `/mainwindow/detail/elder_detail` });
+      this.$router.push({ path: `/mainwindow/detail/elder_detail` ,query: {elder_info:row}});
     },
     handleCancel() {
       visible = false;
     },
     handleDelete(index, row) {
       console.log(index, row);
-      this.tableData.splice(index, 1);
+      // , urlParam: row.id
+      this.$api.del_elderly_info({}, {type: "json", urlParam: row.id}).then((resopnse) => {
+        if(resopnse.state === 1){
+          this.success_box("删除成功");
+          this.tableData.splice(index, 1);
+        }else{
+          this.fail_box(resopnse.msg);
+        }
+      })
+      
     },
-    nextStep() {
-      // console.log(this.form);
+    //下一步：到第二页
+    nextStep_to_2() {
       this.dialogFormVisible = false;
       this.dialogFormVisible1 = true;
     },
-    nextStep1() {
-      // console.log(this.form);
-      this.dialogFormVisible1 = false;
-      // let param = {
-      //   name: this.form.name,
-      //   gender: this.form.sex == "male" ? 1 : 0,
-      //   tel: this.form.tel,
-      //   id_card: this.form.id_Card,
-      //   birthday: this.form.birthday.getFullYear() + '-' + (this.form.birthday.getMonth() + 1) + '-' + this.form.birthday.getDate(),
-      //   in_time: this.form.in_date.getFullYear() + '-' + (this.form.in_date.getMonth() + 1) + '-' + this.form.in_date.getDate(),
-      //   out_time: this.form.out_date.getFullYear() + '-' + (this.form.out_date.getMonth() + 1) + '-' + this.form.out_date.getDate(),
-      //   face_feature: this.form.face_feature,
-      //   room_number: this.form.room,
-      //   guardian_name: this.form.guardian_name,
-      //   guardian_tel: this.form.guardian_tel,
-      //   guardian_relation: this.form.guardian_relation,
-      //   remarks: this.form.remarks,
-      //   create_manager_id: 0
-      // };
-      // let param = {
-      //   name: this.form.name,
-      //   gender: 1,
-      //   tel: "18800120157",
-      //   id_card: "2",
-      //   birthday: "2022-7-4",
-      //   in_time: "2022-7-4",
-      //   out_time: "2022-6-17",
-      //   face_feature: "",
-      //   room_number: "1",
-      //   guardian_name: "2",
-      //   guardian_tel: "3",
-      //   guardian_relation: "4",
-      //   remarks: "5",
-      //   create_manager_id: 1,
 
-      // };
+    //下一步：到第三页
+    nextStep_to_3() {
+      this.dialogFormVisible1 = false;
+      this.dialogFormVisible2 = true;
+    },
+
+    //输入信息完成，提交输入
+    submit_form() {
+      //应该有一个给form.face_feature赋值的操作
+      //传给后端的数据
       let param = {
-        name: "test",
-        gender: 1,
-        tel: "str",
-        id_card: "13021541",
-        birthday: "2002-07-08",
-        in_time: "2021-07-08",
-        out_time: "2022-07-08",
-        face_feature: "str",
-        room_number: "11",
-        guardian_name: "string",
-        guardian_tel: "string",
-        guardian_relation: "string",
-        remarks: "string",
-        create_manager_id: 1,
+        id: this.tableData[this.tableData.length - 1].id + 1,
+        name: this.form.name,
+        gender: this.form.gender == "男" ? 1 : 0,
+        tel: this.form.tel,
+        id_card: this.form.id_card,
+        birthday: this.form.birthday.getFullYear() + '-' + (this.form.birthday.getMonth() + 1) + '-' + this.form.birthday.getDate(),
+        in_time: this.form.in_time.getFullYear() + '-' + (this.form.in_time.getMonth() + 1) + '-' + this.form.in_time.getDate(),
+        out_time: this.form.out_time.getFullYear() + '-' + (this.form.out_time.getMonth() + 1) + '-' + this.form.out_time.getDate(),
+        face_feature: this.form.face_feature,
+        room_number: this.form.room_number,
+        guardian_name: this.form.guardian_name,
+        guardian_tel: this.form.guardian_tel,
+        guardian_relation: this.form.guardian_relation,
+        remarks: this.form.remarks,
+        create_manager_id: this.form.create_manager_id
       };
-      console.log(param);
       this.$api
         .add_elderly_info(param , { type: "json" })
         .then((response) => {
           if (response.state === 1) {
             let add_old_msg = {
+              id: param.id,
               url: "", //头像：还没有
               name: param.name,
               tel: param.tel,
               id_card: param.id_card,
               birthday: param.birthday,
               address: "记得让后端传",
-              sex: param.gender == 1 ? "男" : "女",
+              gender: param.gender == 1 ? "男" : "女",
               age: this.doHandleYear() - parseInt(param.birthday.slice(0, 4)),
-              in_date: param.in_time,
-              out_date: param.out_time,
+              in_time: param.in_time,
+              out_time: param.out_time,
               face_feature: "unknown",
-              room: param.room_number,
+              room_number: param.room_number,
               guardian_name: param.guardian_name,
               guardian_tel: param.guardian_tel,
               guardian_relation: param.guardian_relation,
               addition: param.remarks,
+              create_manager_id:param.create_manager_id
             };
             this.tableData.push(add_old_msg);
+            this.dialogFormVisible2 = false;
           } else {
             this.fail_box(response.msg);
           }
         });
     },
-
-    nextStep2() {
-      //完成传图片后将nextStep1中的传参过程迁移到此
-    },
-    preStep() {
-      console.log(this.form);
+    preStep_to_1() {
       this.dialogFormVisible = true;
       this.dialogFormVisible1 = false;
+    },
+    preStep_to_2() {
+      this.dialogFormVisible1 = true;
+      this.dialogFormVisible2 = false;
     },
 
     //初始化页面
@@ -376,25 +386,27 @@ export default {
           //查询成功
           this.tableData = [];
           for (let i = 0; i < response.elderly_info.length; i++) {
-            let val = response.elderly_info[i];
+            let val = response.elderly_info[i];//后端传给前端的数据
             // console.log();
             let param = {
-              url: "", //头像：还没有
+              id: val.id,
               name: val.name,
+              gender: val.gender == 1 ? "男" : "女",
               tel: val.tel,
               id_card: val.id_card,
               birthday: val.birthday,
-              address: "记得让后端传",
-              sex: val.gender == 1 ? "男" : "女",
-              age: this.doHandleYear() - parseInt(val.birthday.slice(0, 4)),
-              in_date: val.in_time,
-              out_date: val.out_time,
-              face_feature: "unknown",
-              room: val.room_number,
+              in_time: val.in_time,
+              out_time: val.out_time,
+              face_feature: val.face_feature,
+              room_number: val.room_number,
               guardian_name: val.guardian_name,
               guardian_tel: val.guardian_tel,
               guardian_relation: val.guardian_relation,
-              addition: val.remarks,
+              remarks: val.remarks,
+              create_manager_id:val.create_manager_id,
+              address: "记得让后端传",
+              age: this.doHandleYear() - parseInt(val.birthday.slice(0, 4)),
+              url: "", //头像：还没有
             };
             this.tableData.push(param);
           }

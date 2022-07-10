@@ -15,7 +15,7 @@
             </el-form-item>
             <el-form-item label="性别：" :label-width="formLabelWidth">
               <el-select
-                v-model="form.sex"
+                v-model="form.gender"
                 placeholder="请选择性别">
                 <!--                style="width: 560px">-->
                 <el-option label="男" value="male"></el-option>
@@ -25,19 +25,31 @@
             <el-form-item label="电话：" :label-width="formLabelWidth">
               <el-input v-model="form.tel" autocomplete="off" style="width: 220px"></el-input>
             </el-form-item>
-            <el-form-item label="身份证：" :label-width="formLabelWidth">
-              <el-input v-model="form.id_Card" autocomplete="off" style="width: 220px"></el-input>
+            <el-form-item label="教育水平：" :label-width="formLabelWidth">
+              <el-input v-model="form.education" autocomplete="off" style="width: 220px"></el-input>
             </el-form-item>
-            <el-form-item label="年龄：" :label-width="formLabelWidth">
-              <el-input v-model="form.age" autocomplete="off" style="width: 220px"></el-input>
+            <el-form-item label="职务：" :label-width="formLabelWidth">
+              <el-input v-model="form.occupation" autocomplete="off" style="width: 220px"></el-input>
+            </el-form-item>
+            <el-form-item label="工资：" :label-width="formLabelWidth">
+              <el-input v-model="form.wages" autocomplete="off" style="width: 220px"></el-input>
             </el-form-item>
             <el-form-item label="入职日期：" :label-width="formLabelWidth">
               <el-date-picker
-                v-model="form.in_date"
+                v-model="form.entry_time"
                 type="date"
                 placeholder="选择日期">
               </el-date-picker>
             </el-form-item>
+
+            <el-form-item label="离职日期：" :label-width="formLabelWidth">
+              <el-date-picker
+                v-model="form.resignation_time"
+                type="date"
+                placeholder="选择日期">
+              </el-date-picker>
+            </el-form-item>
+
             <el-form-item label="备注：" :label-width="formLabelWidth">
               <el-input v-model="form.remarks" autocomplete="off" style="width: 220px"></el-input>
             </el-form-item>
@@ -45,6 +57,21 @@
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取 消</el-button>
             <el-button type="primary" @click="nextStep">下一步</el-button>
+          </div>
+        </el-dialog>
+        <!-- 添加员工人脸信息 -->
+        <el-dialog
+          title="添加员工-人脸信息"
+          :visible.sync="dialogFormVisible1"
+          width="30%"
+        >
+          <div>
+            插入图片？
+            <!-- <img></img> -->
+          </div>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="preStep">上一步</el-button>
+            <el-button type="primary" @click="submit_form">提交</el-button>
           </div>
         </el-dialog>
       </el-col>
@@ -74,7 +101,7 @@
         width="60">
         <template slot-scope="scope">
           <!--          <i class="el-icon-time"></i>-->
-          <span style="margin-left: 10px">{{ scope.row.sex }}</span>
+          <span style="margin-left: 10px">{{ scope.row.gender }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -89,7 +116,7 @@
         label="学历"
         width="90">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.edu }}</span>
+          <span style="margin-left: 10px">{{ scope.row.education }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -97,7 +124,7 @@
         width="550">
         <template slot-scope="scope">
           <!--          <i class="el-icon-time"></i>-->
-          <span style="margin-left: 10px">{{ scope.row.addition }}</span>
+          <span style="margin-left: 10px">{{ scope.row.remarks }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -120,54 +147,28 @@
 </template>
 
 <script>
+import api from '../../../../api/api';
+
 export default {
   data() {
     return {
       search: '',
-      tableData: [{
-        id: '1',
-        url:"https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-        name: '范星宇',
-        address: '上海市普陀区金沙江路 1518 弄',
-        sex: '男',
-        tel: '13888888888',
-        birth: '2001-11-19',
-        addition: '我是陈俊哲爸爸'
-      }, {
-        id: '2',
-        name: '陈俊哲',
-        address: '上海市普陀区金沙江路 1517 弄',
-        sex: '男',
-        tel: '13888888888',
-        birth: '2000-12-17',
-        addition: '我是范星宇儿子'
-      }, {
-        id: '3',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄',
-        sex: '男',
-        tel: '13888888888',
-        birth: '2001-11-19',
-        addition: ''
-      }, {
-        id: '4',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄',
-        sex: '男',
-        tel: '13888888888',
-        birth: '2001-11-19',
-        addition: ''
-      }],
+      tableData: [],
       dialogFormVisible: false,
+      dialogFormVisible1: false,
       form: {
+        id: 0,
         name: '',
-        sex: '',
+        gender: '',
         tel: '',
-        in_date: '',
-        out_date: '',
-        birthday: '',
-        id_Card: '',
-        face_feature: '',
+        education:'',
+        face_feature:'',
+        occupation:'',
+        wages:0,
+        remarks:'',
+        entry_time: '',
+        resignation_time: '',
+        create_manager_id: 0
       },
       formLabelWidth: '120px',
       disabledDate(time) {
@@ -179,22 +180,73 @@ export default {
     this.init();
   },
   methods: {
+    //成功弹出框
+    success_box(msg) {
+      this.$message({
+        showClose: true,
+        message: msg,
+        type: 'success'
+      });
+    },
+    //失败弹出框
+    fail_box(msg) {
+      this.$message({
+        showClose: true,
+        message: msg,
+        type: 'error'
+      });
+    },
     handleEdit(index, row) {
       console.log(index, row);
-      this.$router.push({ path: `/mainwindow/detail/person_detail` });
+      this.$router.push({ path: `/mainwindow/detail/person_detail` , query: {staff_info: row}});
     },
     handleCancel(){
       visible = false;
     },
     handleDelete(index, row) {
       console.log(index, row);
-      this.tableData.splice(index,1);
+      this.$api.del_staff_info({}, {type: "json", urlParam:row.id}).then((response)=>{
+        if(response.state === 1){
+          this.success_box("删除成功");
+          this.tableData.splice(index,1);
+        }else{
+          this.fail_box(response.msg);
+        }
+      })
+      
     },
+    preStep(){
+      this.dialogFormVisible = true;
+      this.dialogFormVisible1 = false;
+    },
+
     nextStep(){
-      console.log(this.form);
       this.dialogFormVisible = false;
       this.dialogFormVisible1 = true;
     },
+
+    submit_form(){
+      let param = this.form;
+      param.gender = this.form.gender == "mail" ? 1 : 0;
+      param.id = this.tableData.length == 0 ? 1 :this.tableData[this.tableData.length - 1].id + 1;
+      param.entry_time = this.form.entry_time.getFullYear() + '-' + (this.form.entry_time.getMonth() + 1) + '-' + this.form.entry_time.getDate();
+      param.resignation_time = this.form.resignation_time.getFullYear() + '-' + (this.form.resignation_time.getMonth() + 1) + '-' + this.form.resignation_time.getDate()
+      param.wages = parseInt(this.form.wages)
+      //TODO param.create_manager_id = 
+      console.log(param);
+      this.$api.add_staff_info(param, {type: "json"}).then((response)=>{
+        if(response.state === 1) {
+          let add_msg = param;
+          add_msg.gender = param.gender == 1 ? "男" : "女";
+          this.tableData.push(add_msg);
+          this.dialogFormVisible1 = false;
+        }else {
+          this.fail_box(response.msg)
+        }
+      })
+    },
+
+
     //初始化页面
     init() {
       this.$api.staff_info({}, { type: "json" }).then((response) => {
@@ -202,26 +254,24 @@ export default {
         if (response.state === 1) {
           //查询成功
           this.tableData = [];
-          for (let i = 0; i < response.elderly_info.length; i ++) {
+          for (let i = 0; i < response.staff_info.length; i ++) {
             let val = response.staff_info[i];
             // console.log();
             let param = {
+              id: val.id,
               url: "", //头像：还没有
               name: val.name,
               address: "记得让后端传",
-              sex: val.gender == 1 ? '男': '女',
+              gender: val.gender == 1 ? '男': '女',
               tel: val.tel,
-              edu: "带专",
-              id_card: val.id_card,
-              age: this.doHandleYear() - parseInt(val.birthday.slice(0, 4)),
-              in_date: val.in_time,
-              out_date: val.out_time,
-              face_feature: "unknown",
-              room:val.room_number,
-              guardian_name: val.guardian_name,
-              guardian_tel: val.guardian_tel,
-              guardian_relation: val.guardian_relation,
-              addition: val.remarks
+              education: val.education,
+              face_feature: val.face_feature,
+              occupation:val.occupation,
+              wages:val.wages,
+              entry_time: val.entry_time,
+              resignation_time: val.resignation_time,
+              remarks: val.remarks,
+              create_manager_id: 0
             };
             this.tableData.push(param);
           }
@@ -234,7 +284,6 @@ export default {
       var myDate = new Date();
       var tYear = myDate.getFullYear();
       var tMonth = myDate.getMonth();
-
       var m = tMonth + 1;
       if (m.toString().length == 1) {
         m = "0" + m;
@@ -246,7 +295,6 @@ export default {
     doHandleYear(tYear) {
       var myDate = new Date();
       var tYear = myDate.getFullYear();
-
       return tYear;
     },
     doHandleMonth() {

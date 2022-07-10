@@ -18,13 +18,24 @@ apiList.forEach((item, index) => {
 
     } else {
         api[item.name] = (params, config) => {
+            
             let param = ''
-            if (config && config.urlParam) { //url拼接参数  config:{urlParam:'参数拼接字符串'}
-                param += '/' + config.urlParam;
+            if(typeof(config) != "undefined"){
+                if(typeof(config.urlParam) != "undefined"){
+                    param += '/' + config.urlParam;
+                }
+                if(typeof(config.params) != "undefined"){
+                    param += '?' + qs.stringify(config.params);
+                }
             }
-            if (config && config.params) { //get请求方式传参：{}，{params:{get参数}}
-                param += '?' + qs.stringify(config.params);
-            }
+            // if (typeof(config) != "undefined" && typeof(config.urlParam) != "undefined") { //url拼接参数  config:{urlParam:'参数拼接字符串'}
+                
+            // }
+            
+            // if (config && config.params) { //get请求方式传参：{}，{params:{get参数}}
+            //     param += '?' + qs.stringify(config.params);
+                
+            // }
             return fetch(baseUrl + item.url + param, {
                 method: item.method,
                 //自执行函数

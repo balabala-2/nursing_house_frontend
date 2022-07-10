@@ -110,12 +110,12 @@ export default {
     }
   },
   mounted() {
-    this.info = Cookies.get("info");
-    this.info = JSON.parse(this.info);
-    console.log(this.info);
-    if (document.body.clientWidth < 1500) {
-      this.collapseChage();
-    }
+    // this.info = Cookies.get("info");
+    // this.info = JSON.parse(this.info);
+    // console.log(this.info);
+    // if (document.body.clientWidth < 1500) {
+    //   this.collapseChage();
+    // }
   }
 };
 </script>
