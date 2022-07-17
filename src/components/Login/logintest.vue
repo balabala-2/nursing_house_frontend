@@ -12,12 +12,12 @@ export default {
     return{
       img1:'',
       visible: true,
-      register: false
+      register: false  
     }
   },
 
   created(){
-    this.img1 = this.$api.avatar + "?user=" + this.username// get
+    this.img1 = this.$api.avatar + "?user=" + this.username// get 
   },
   methods:{
 

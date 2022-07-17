@@ -9,18 +9,6 @@
       </el-col>
     </el-row>
     <el-row>
-      <div id="search_elder">
-        <el-autocomplete
-          class="elder_search"
-          v-model="state"
-          :fetch-suggestions="querySearchAsync"
-          placeholder="老人近七天情绪查询"
-          @select="handleSelect"
-        ></el-autocomplete>
-        <el-button icon="el-icon-search" id="butt" circle></el-button>
-      </div>
-    </el-row>
-    <el-row>
       <el-col :span="24">
         <elderChart3></elderChart3>
       </el-col>
@@ -37,6 +25,9 @@ export default {
     elderChart1,
     elderChart2,
     elderChart3
+  },
+  methods:{
+
   }
 };
 </script>

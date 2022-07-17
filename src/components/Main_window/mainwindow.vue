@@ -12,11 +12,10 @@
 import CliTitle from "@/components/Main_window/cliTitle";
 import CliMenu from "@/components/Main_window/cliMenu";
 import TotalNum from "@/components/Main_window/totalNum";
-import monitor from "@/components/Main_window/center_window/monitor/monitor"
 
 export default {
   name: "index",
-  components: { CliTitle, CliMenu, monitor },
+  components: { CliTitle, CliMenu }
 };
 </script>
 
@@ -42,5 +41,4 @@ export default {
 /*.msmall{*/
 /*  background-color: orange;*/
 /*}*/
-
 </style>

@@ -6,30 +6,30 @@
  * baseImgPath: 图片存放地址
  *
  */
-let baseUrl = 'http://localhost:8000/api'
-let serviceUrl = ''
-let routerMode = 'hash'
-let baseImgPath
-let apiUrl = ''
+let baseUrl = '';
+let serviceUrl = '';
+let routerMode = 'hash';
+let baseImgPath;
+let apiUrl=''
 
-if (process.env.NODE_ENV === 'development') { // 开发环境
-  routerMode = 'hash'
-  baseUrl = '/api'
-  serviceUrl = ''
-  apiUrl = '/api'
-  baseImgPath = ''
-} else { // 线上地址
-  routerMode = 'history'
-  baseUrl = '/platform' // nginx配置协调
-  serviceUrl = ''
-  apiUrl = '/api'
-  baseImgPath = '/platform'
+if (process.env.NODE_ENV == 'development') { //开发环境
+    routerMode = 'hash';
+    baseUrl = '/api';
+    serviceUrl = '';
+    apiUrl='/api';
+    baseImgPath = '';
+} else { //线上地址
+    routerMode = 'history';
+    baseUrl = '/platform';  //nginx配置协调
+    serviceUrl='';
+    apiUrl='/api';
+    baseImgPath = '/platform';
 }
 
 export {
-  baseUrl,
-  serviceUrl,
-  routerMode,
-  apiUrl,
-  baseImgPath
+    baseUrl,
+    serviceUrl,
+    routerMode,
+    apiUrl,
+    baseImgPath
 }

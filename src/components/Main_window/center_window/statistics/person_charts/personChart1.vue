@@ -1,52 +1,76 @@
 <template>
   <div class="Echarts">
-    <div id="echart1" style="width: 100%; height: 440px; margin-top:45px"></div>
+    <div
+      id="echart1"
+      style="width: 100%; height: 740px; margin-top: 45px"
+    ></div>
   </div>
 </template>
 
 <script>
 export default {
   name: "personChart1",
+  data() {
+    return {
+      option: {},
+      entry_num_info: [],
+      resignation_num_info: [],
+    };
+  },
+  created() {
+    this.init();
+  },
   mounted() {
     this.myChart = this.$echarts.init(document.getElementById("echart1"));
     this.updateEcharts();
   },
   methods: {
+    init() {
+      this.$api.get_staff_entry_resignation({}, { type: "json" }).then((response) => {
+        if (response.state === 1) {
+          
+          this.entry_num_info = response.entry_num_info;
+          this.resignation_num_info = response.resignation_num_info;
+          this.updateEcharts();
+        }
+      });
+    },
     updateEcharts() {
       this.option = {
         title: {
-          text: ""
+          text: "",
         },
         tooltip: {
           trigger: "axis",
           axisPointer: {
             type: "cross",
             label: {
-              backgroundColor: "#6a7985"
-            }
-          }
+              backgroundColor: "#6a7985",
+            },
+          },
         },
         legend: {
           data: ["离职人数", "入职人数"],
           textStyle: {
             //图例文字的样式
             // color: "#fff",
-            fontSize: 20
+            fontSize: 20,
           },
           itemWidth: 15,
-          itemHeight: 15
+          itemHeight: 15,
+          y: 40
         },
         toolbox: {
-          left: 800,
-          top: -3,
+          left: 1200,
+          top: 38,
           feature: {
-            saveAsImage: {}
-          }
+            saveAsImage: {},
+          },
         },
         grid: {
-          y: 80,
-          height: 330,
-          containLabel: true
+          y: 180,
+          height: 400,
+          containLabel: true,
         },
         xAxis: [
           {
@@ -64,15 +88,15 @@ export default {
               "九月",
               "十月",
               "十一月",
-              "十二月"
+              "十二月",
             ],
             axisLine: {
               show: true,
               symbol: ["none", "arrow"],
               symbolSize: [5, 10],
-              symbolOffset: 10
-            }
-          }
+              symbolOffset: 10,
+            },
+          },
         ],
         yAxis: [
           {
@@ -80,15 +104,15 @@ export default {
             type: "value",
             name: "工作人员人数",
             nameTextStyle: {
-              fontSize: 16
+              fontSize: 16,
             },
             axisLine: {
               show: true,
               symbol: ["none", "arrow"],
               symbolSize: [5, 10],
-              symbolOffset: 10
-            }
-          }
+              symbolOffset: 10,
+            },
+          },
         ],
         series: [
           {
@@ -96,7 +120,7 @@ export default {
             type: "line",
             stack: "总量",
             areaStyle: { normal: {} },
-            data: [2, 5, 1, 3, 0, 4, 2, 2, 1, 0, 3, 1]
+            data: this.resignation_num_info ,
           },
           {
             name: "入职人数",
@@ -105,17 +129,17 @@ export default {
             label: {
               normal: {
                 show: true,
-                position: "top"
-              }
+                position: "top",
+              },
             },
             areaStyle: { normal: {} },
-            data: [5, 10, 3, 5, 2, 6, 10, 5, 8, 2, 10, 13]
-          }
-        ]
+            data: this.entry_num_info,
+          },
+        ],
       };
       this.myChart.setOption(this.option);
-    }
-  }
+    },
+  },
 };
 </script>
 

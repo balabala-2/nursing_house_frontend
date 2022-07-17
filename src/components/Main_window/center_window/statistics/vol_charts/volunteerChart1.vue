@@ -1,17 +1,37 @@
 <template>
   <div class="Echarts">
-    <div id="echart1" style="width: 100%; height: 440px; margin-top:45px"></div>
+    <div id="echart1" style="width: 100%; height: 740px; margin-top:45px"></div>
   </div>
 </template>
 
 <script>
 export default {
   name: "volunteerChart1",
+  data() {
+    return {
+      option: {},
+      entry_num_info: [],
+      resignation_num_info: [],
+    };
+  },
+  created() {
+    this.init();
+  },
   mounted() {
     this.myChart = this.$echarts.init(document.getElementById("echart1"));
     this.updateEcharts();
   },
   methods: {
+    init() {
+      this.$api.get_volunteer_entry_resignation({}, { type: "json" }).then((response) => {
+        if (response.state === 1) {
+          
+          this.entry_num_info = response.entry_num_info;
+          this.resignation_num_info = response.resignation_num_info;
+          this.updateEcharts();
+        }
+      });
+    },
     updateEcharts() {
       this.option = {
         title: {
@@ -34,18 +54,19 @@ export default {
             fontSize: 20
           },
           itemWidth: 15,
-          itemHeight: 15
+          itemHeight: 15,
+          y: 40
         },
         toolbox: {
-          left: 800,
-          top: -3,
+          left: 1200,
+          top: 38,
           feature: {
             saveAsImage: {}
           }
         },
         grid: {
-          y: 80,
-          height: 330,
+          y: 180,
+          height: 400,
           containLabel: true
         },
         xAxis: [
@@ -96,7 +117,7 @@ export default {
             type: "line",
             stack: "总量",
             areaStyle: { normal: {} },
-            data: [2, 5, 1, 3, 0, 4, 2, 2, 1, 0, 3, 1]
+            data: this.resignation_num_info 
           },
           {
             name: "入职人数",
@@ -109,7 +130,7 @@ export default {
               }
             },
             areaStyle: { normal: {} },
-            data: [5, 10, 3, 5, 2, 6, 10, 5, 8, 2, 10, 13]
+            data: this.entry_num_info
           }
         ]
       };

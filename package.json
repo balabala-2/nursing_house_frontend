@@ -16,6 +16,7 @@
   "dependencies": {
     "@liveqing/liveplayer": "^2.6.8",
     "axios": "^0.27.2",
+    "echarts": "^5.3.3",
     "element-ui": "^2.15.9",
     "js-cookie": "^3.0.1",
     "video.js": "^7.19.2",

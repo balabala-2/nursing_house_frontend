@@ -12,7 +12,7 @@
       id="register_button"
       @click="register"
       :disabled="register_not_complete"
-    >注 册</el-button
+      >注 册</el-button
     >
     <div :class="{ on: !is_admin }">
       <el-input
@@ -261,10 +261,7 @@ export default {
       } else if (this.password1 !== this.password2) {
         this.fail_box("两次密码输入不一致");
         return;
-      } else if (this.return_auth_code !== this.auth_code) {
-        this.fail_box("验证码错误！");
-        return;
-      }
+      } 
 
       this.$api
         .register(
@@ -279,7 +276,7 @@ export default {
         )
         .then((response) => {
           console.log(response);
-          if (response.status === true) {
+          if (response.state === 1) {
             this.success_box("注册成功");
             this.$router.go(0);
           } else {
@@ -312,7 +309,6 @@ export default {
             { type: "json" }
           )
           .then((response) => {
-            console.log(response)
             this.return_auth_code = response.verifycode;
           });
       }
